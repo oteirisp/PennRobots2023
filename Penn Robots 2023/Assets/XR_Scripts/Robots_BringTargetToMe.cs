@@ -5,32 +5,13 @@ using UnityEngine.UI;
 
 public class Robots_BringTargetToMe : MonoBehaviour
 {
-    public GameObject RobotTarget;
-
-    public GameObject controllerL;
-    public GameObject controllerR;
-    public GameObject WebCamera;
-    private GameObject myController;
+    public GameObject ObjectToMove;
+    public GameObject ThingToMoveTo;
 
     public void ComeToMe()
     {
-        if (controllerL.activeSelf)
-        {
-            myController = controllerL;
-        }
-        else if (controllerR.activeSelf)
-        {
-            myController = controllerR;
-        }
-        else if (WebCamera.activeSelf)
-        {
-            myController = WebCamera;
-        }
-
-        Debug.Log("my controller is: " + myController.name);
-
-        RobotTarget.transform.position = myController.transform.position;
-        RobotTarget.transform.rotation = myController.transform.rotation;
-        RobotTarget.transform.RotateAround(RobotTarget.transform.position, RobotTarget.transform.right, -90);
+        ObjectToMove.transform.position = ThingToMoveTo.transform.position;
+        ObjectToMove.transform.rotation = ThingToMoveTo.transform.rotation;
+        ObjectToMove.transform.RotateAround(ObjectToMove.transform.position, ObjectToMove.transform.right, -90);
     }
 }
