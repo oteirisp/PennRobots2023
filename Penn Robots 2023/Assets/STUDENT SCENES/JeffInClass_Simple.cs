@@ -65,7 +65,11 @@ public class JeffInClass_Simple : MonoBehaviour
         DrawingOn = false;
     }
 
+    public void ToggleDrawing()
+    {
+        DrawingOn = !DrawingOn;
 
+    }
 
     public void BringTargetToMe()
     {
