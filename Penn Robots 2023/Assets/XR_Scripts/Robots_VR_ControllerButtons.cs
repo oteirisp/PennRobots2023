@@ -5,27 +5,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
+using UnityEngine.Events;
+
 
 public class Robots_VR_ControllerButtons : MonoBehaviour
 {
-    #region PUBLIC VARIABLES
     public float laserLength = 3.0f;
 
-    public GameObject sceneManager;
+    public UnityEvent VRController_ButtonEvent_ThumbLeft = new UnityEvent();
+    public UnityEvent VRController_ButtonEvent_ThumbRight = new UnityEvent();
+    public UnityEvent VRController_ButtonEvent_ThumbUp = new UnityEvent();
+    public UnityEvent VRController_ButtonEvent_ThumbDown = new UnityEvent();
 
+    public UnityEvent VRController_ButtonEvent_TriggerClicked = new UnityEvent();
+    public UnityEvent VRController_ButtonEvent_TriggerUnClicked = new UnityEvent();
+    public UnityEvent VRController_ButtonEvent_Grip = new UnityEvent();
+    public UnityEvent VRController_ButtonEvent_Menu = new UnityEvent();
 
-    #endregion
-
-    #region PRIVATE VARIABLES
-
-    #endregion
-
-    #region AWAKE AND START FUNCTIONS
-    private void Awake()
-    {
-
-     
-    }
+    private bool isClicked_Trigger = false;
 
     void Start()
     {
@@ -35,9 +32,8 @@ public class Robots_VR_ControllerButtons : MonoBehaviour
         trackedController.PadClicked += new ClickedEventHandler(PadClicked);
         trackedController.MenuButtonClicked += new ClickedEventHandler(MenuClick);
         trackedController.Gripped += new ClickedEventHandler(Gripped);
-
     }
-    #endregion
+
 
     private void Update()
     {
@@ -53,86 +49,83 @@ public class Robots_VR_ControllerButtons : MonoBehaviour
 
             if (Vector3.Distance(origin, hit.point) < laserLength)
             {
-                
+                MyRayHit();
             }
             else
             {
-                RayMissed();
+                MyRayMissed();
             }
         }
         else
         {//this means the raycast missed
-            RayMissed();
+            MyRayMissed();
         }
     }
-    void RayMissed()
+    void MyRayHit()
+    {
+
+    }
+    void MyRayMissed()
     {
 
     }
     void DoClick(object sender, ClickedEventArgs e)
     {
-        Debug.Log("hey i clicked the trigger button");
-        sceneManager.GetComponent<InClassScript>().MySpecialButton();
-        //sceneManager.GetComponent<Robots_SendInstructionToMaster>().SendToMaster();
-        //this.gameObject.GetComponent<Robots_DrawLine>().LineStart();
-
+        if (!isClicked_Trigger)
+        {
+            Debug.Log("hey i clicked the trigger button");
+            //sceneManager.GetComponent<InClassScript>().MySpecialButton();
+            //sceneManager.GetComponent<Robots_SendInstructionToMaster>().SendToMaster();
+            //this.gameObject.GetComponent<Robots_DrawLine>().LineStart();
+            VRController_ButtonEvent_TriggerClicked.Invoke();
+            isClicked_Trigger = true;
+        }
     }
     void UnClick(object sender, ClickedEventArgs e)
     {
-        Debug.Log("hey i UN clicked the trigger button");
-
-        //this.gameObject.GetComponent<Robots_DrawLine>().LineStop();
-
-
+        if (isClicked_Trigger)
+        {
+            Debug.Log("hey i UN clicked the trigger button");
+            //this.gameObject.GetComponent<Robots_DrawLine>().LineStop();
+            VRController_ButtonEvent_TriggerUnClicked.Invoke();
+            isClicked_Trigger = false;
+        }
     }
     void PadClicked(object sender, ClickedEventArgs e)
     {
-
-
         Debug.Log("hey i clicked the pad button");
-
 
         float PadLimitHigh = 0.7f;
         float PadLimitLow = 0.3f;
-        if (e.padX < -(PadLimitHigh) && e.padY < PadLimitLow)
-        { //Left
 
+        if (e.padX < -(PadLimitHigh) && e.padY < PadLimitLow) //Left
+        {
+            VRController_ButtonEvent_ThumbLeft.Invoke();
         }
-        else if (e.padX > PadLimitHigh && e.padY < PadLimitLow)
-        { //Right
-
-
+        else if (e.padX > PadLimitHigh && e.padY < PadLimitLow) //Right
+        {
+            VRController_ButtonEvent_ThumbRight.Invoke();
         }
-
-
-
-
-
-
-
-
-        //
-        //here i need to have the world space target go to the next point in my list
-        //
-
-
-        //this.gameObject.GetComponent<Robots_BringTargetToMe>().ComeToMe();
-
-
+        else if (e.padX < PadLimitLow && e.padY > PadLimitHigh) //Up
+        {
+            VRController_ButtonEvent_ThumbUp.Invoke();
+        }
+        else if (e.padX < PadLimitLow && e.padY < -(PadLimitHigh)) //Down
+        {
+            VRController_ButtonEvent_ThumbDown.Invoke();
+        }
     }
 
     void Gripped(object sender, ClickedEventArgs e)
     {
         //sceneManager.GetComponent<Robots_BringTargetToMe>().SendAllPointsToMachina();
-
-
         Debug.Log("hey i clicked the grip button");
-
+        VRController_ButtonEvent_Grip.Invoke();
     }
 
     void MenuClick(object sender, ClickedEventArgs e)
     {
         Debug.Log("hey i clicked the menu button");
-
+        VRController_ButtonEvent_Menu.Invoke();
     }
 }
