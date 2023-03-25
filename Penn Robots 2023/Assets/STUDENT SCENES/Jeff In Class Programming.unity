@@ -6244,8 +6244,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 286334669}
-        m_MethodName: StopDrawing
+      - m_Target: {fileID: 1990542965}
+        m_MethodName: RemoteRotateStop
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18322,8 +18322,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 286334669}
-        m_MethodName: StartDrawing
+      - m_Target: {fileID: 1990542965}
+        m_MethodName: RemoteRotateStart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19620,8 +19620,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ced39b8302bb5c42b5742baf1b6cef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectToMove: {fileID: 0}
-  ThingToMoveTo: {fileID: 0}
+  ObjectToMove: {fileID: 517681031}
+  ThingToMoveTo: {fileID: 1059764409}
 --- !u!114 &1990542966
 MonoBehaviour:
   m_ObjectHideFlags: 0
